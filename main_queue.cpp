@@ -31,7 +31,7 @@ DigitalOut redLed(LED1,1);
 DigitalOut greenLed(LED2,1);
 DigitalOut blueLed(LED3,1);
 DigitalOut haptic(PTB9);
-//Serial pc(USBTX, USBRX); // Serial interface
+Serial pc(USBTX, USBRX); // Serial interface
 
 
 /* Define timer for haptic feedback */
@@ -48,6 +48,7 @@ SSD1351 oled(PTB22,PTB21,PTC13,PTB20,PTE6, PTD15); /* (MOSI,SCLK,POWER,CS,RST,DC
 /*Create a Thread to handle sending BLE Sensor Data */
 //Thread txThread;
 Thread dataThread;
+Timer t; 
 
  /* Text Buffer */
 char text[20];
@@ -189,7 +190,7 @@ void get_command(int& cmd,float& move_x,float& move_y,int sample_length){
         pitch_buffer[i] = pitch;
         gx_buffer[i] = gx;
         gy_buffer[i] = gy;
-        Thread::wait(5);
+        Thread::wait(2);
 
     }
     /*for (int i = 0;i<sample_length;i++){
@@ -319,11 +320,12 @@ int main()
     float move_y = 0;
 
     dataThread.start(dataTask); /*Start transmitting Sensor Tag Data */
-
+ 
     while(true) {
-
+        pc.printf("main while begins %d \r\n", t.read_ms());
       //get_command(cmd,move_x,move_y,20);
       osEvent evt = queue.get();
+      pc.printf("get event status %d \r\n", t.read_ms());
       if (evt.status == osEventMessage) {
         message_t *message = (message_t*) evt.value.p;
         cmd = message->cmd;
@@ -346,22 +348,22 @@ int main()
         }else if (move_x != 0 || move_y != 0) {
             instruction += 2;
         }
-
+        pc.printf("main before bluetooth  %d \r\n", t.read_ms());
         blueLed = !kw40z_device.GetAdvertisementMode(); /*Indicate BLE Advertisment Mode*/
         kw40z_device.SendSetApplicationMode(GUI_CURRENT_APP_SENSOR_TAG);
 
         kw40z_device.SendAccel(instruction,(int16_t)move_x,(int16_t)move_y);
-
-        //pc.printf("%4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f \r\n" ,gx,gy,gz,move_x,move_y,ax,roll,pitch);
+        
         flip = !flip;
         if(flip == true) {
             instruction = 1;
         } else {
             instruction = 0;
         }
-
+        
       }
-    Thread::wait(1);
+    Thread::wait(140);
+    pc.printf("main after wait  %d \r\n", t.read_ms());
     }
 }
 
@@ -377,12 +379,16 @@ void StopHaptic(void const *n) {
 }
 
 void dataTask(void) {
+    t.reset();
+    t.start();
     while(true) {
+      
+      pc.printf("initilize %d \r\n", t.read_ms());
       int cmd = 0;
       float move_x = 0;
       float move_y = 0;
-      int sample_length = 20;
-
+      int sample_length = 40; 
+      
       const float coffe_0[6] = { 3.26058485e-03, -4.89987206e-03, -2.05877017e-02,  3.16671988e-03, 5.79273382e+00, -1.60204263e+00};
 
       const float coffe_1[6] = { 1.22703505e-03, -2.06662456e-04, -1.68982080e-02,  1.94460189e-02, -4.50079549e+00,  1.09530008e+00};
@@ -397,7 +403,7 @@ void dataTask(void) {
       const float bias_3 = -2.617;
       float ax_modify = 0;
       float ay_modify = 0;
-      float dt = 0.2;
+      float dt = 0.02;
       float roll = 0;
       float pitch = 0;
       float alpha = 0.6;
@@ -423,8 +429,8 @@ void dataTask(void) {
       float th_1 = 100;
       float th_2 = 100;
 
-
-
+     
+      pc.printf("before loop %d \r\n", t.read_ms());
       for (int i = 0;i<sample_length;i++){
 
           accel.acquire_accel_data_g(accel_data);
@@ -439,7 +445,7 @@ void dataTask(void) {
 
           roll_acc = (atan2(-ay,-az)*180.0)/M_PI;
           pitch_acc = (atan2(-ax,sqrt(ay*ay + az*az))*180.0)/M_PI;
-
+          
           roll = gx*dt+roll;
           pitch = gy*dt+pitch;
           pitch = alpha*pitch+(1-alpha)*pitch_acc;
@@ -462,9 +468,9 @@ void dataTask(void) {
           pitch_buffer[i] = pitch;
           gx_buffer[i] = gx;
           gy_buffer[i] = gy;
-          Thread::wait(1);
+          Thread::wait(2);
         }
-
+        pc.printf("after for loop %d \r\n", t.read_ms());
         for(int i=0;i<sample_length;i++){
            if(seq_0 == 0){
                if(gx_buffer[i] > 100){
@@ -515,13 +521,15 @@ void dataTask(void) {
         else if (pitch_avg < -10) {
             move_y = pitch_avg + 10;
         }
-
+        pc.printf("before queue %d \r\n", t.read_ms());
         message_t *message = mpool.alloc();
         message->cmd = cmd;
         message->move_x = move_x;
         message->move_y = move_y;
         queue.put(message);
-        Thread:wait(2);
-
+        pc.printf("after queue %d \r\n", t.read_ms());
+        Thread::wait(50);  
+       // pc.printf("after wait %d \r\n", t.read_ms());
+            
     }
 }
