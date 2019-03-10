@@ -322,10 +322,10 @@ int main()
     dataThread.start(dataTask); /*Start transmitting Sensor Tag Data */
  
     while(true) {
-        pc.printf("main while begins %d \r\n", t.read_ms());
+       // pc.printf("main while begins %d \r\n", t.read_ms());
       //get_command(cmd,move_x,move_y,20);
       osEvent evt = queue.get();
-      pc.printf("get event status %d \r\n", t.read_ms());
+      //pc.printf("get event status %d \r\n", t.read_ms());
       if (evt.status == osEventMessage) {
         message_t *message = (message_t*) evt.value.p;
         cmd = message->cmd;
@@ -348,7 +348,7 @@ int main()
         }else if (move_x != 0 || move_y != 0) {
             instruction += 2;
         }
-        pc.printf("main before bluetooth  %d \r\n", t.read_ms());
+        //pc.printf("main before bluetooth  %d \r\n", t.read_ms());
         blueLed = !kw40z_device.GetAdvertisementMode(); /*Indicate BLE Advertisment Mode*/
         kw40z_device.SendSetApplicationMode(GUI_CURRENT_APP_SENSOR_TAG);
 
@@ -363,7 +363,7 @@ int main()
         
       }
     Thread::wait(140);
-    pc.printf("main after wait  %d \r\n", t.read_ms());
+    //pc.printf("main after wait  %d \r\n", t.read_ms());
     }
 }
 
@@ -383,7 +383,7 @@ void dataTask(void) {
     t.start();
     while(true) {
       
-      pc.printf("initilize %d \r\n", t.read_ms());
+      //pc.printf("initilize %d \r\n", t.read_ms());
       int cmd = 0;
       float move_x = 0;
       float move_y = 0;
@@ -430,7 +430,7 @@ void dataTask(void) {
       float th_2 = 100;
 
      
-      pc.printf("before loop %d \r\n", t.read_ms());
+      //pc.printf("before loop %d \r\n", t.read_ms());
       for (int i = 0;i<sample_length;i++){
 
           accel.acquire_accel_data_g(accel_data);
@@ -470,7 +470,7 @@ void dataTask(void) {
           gy_buffer[i] = gy;
           Thread::wait(2);
         }
-        pc.printf("after for loop %d \r\n", t.read_ms());
+        //pc.printf("after for loop %d \r\n", t.read_ms());
         for(int i=0;i<sample_length;i++){
            if(seq_0 == 0){
                if(gx_buffer[i] > 100){
@@ -521,13 +521,13 @@ void dataTask(void) {
         else if (pitch_avg < -10) {
             move_y = pitch_avg + 10;
         }
-        pc.printf("before queue %d \r\n", t.read_ms());
+       // pc.printf("before queue %d \r\n", t.read_ms());
         message_t *message = mpool.alloc();
         message->cmd = cmd;
         message->move_x = move_x;
         message->move_y = move_y;
         queue.put(message);
-        pc.printf("after queue %d \r\n", t.read_ms());
+        //pc.printf("after queue %d \r\n", t.read_ms());
         Thread::wait(50);  
        // pc.printf("after wait %d \r\n", t.read_ms());
             
