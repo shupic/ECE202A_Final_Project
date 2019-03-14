@@ -152,6 +152,7 @@ int main(){
         t_1 = message->t_1;
         mpool.free(message);
         int instruction = 0;
+  /////////////generate instruction based on sensor data
         if (prev_cmd == 0) {
             if (click == true) {
                 cmd = 6;
@@ -173,6 +174,7 @@ int main(){
             cmd = 0;
         }
         prev_cmd = cmd;
+ //////////////////////////////////////////////////
         //blueLed = !kw40z_device.GetAdvertisementMode(); /*Indicate BLE Advertisment Mode*/
         //kw40z_device.SendSetApplicationMode(GUI_CURRENT_APP_SENSOR_TAG);
 
