@@ -26,6 +26,15 @@ MemoryPool<message_t, 16> mpool;
 Queue<message_t, 16> queue;
 
 
+const int sample_length = 40;
+
+float ax_buffer[sample_length];
+float ay_buffer[sample_length];
+float az_buffer[sample_length];
+float gx_buffer[sample_length];
+float gy_buffer[sample_length];
+float roll_buffer[sample_length];
+float pitch_buffer[sample_length];
 
 DigitalOut redLed(LED1,1);
 DigitalOut greenLed(LED2,1);
@@ -46,7 +55,6 @@ FXAS21002 gyro(PTC11,PTC10); // Gyroscope
 SSD1351 oled(PTB22,PTB21,PTC13,PTB20,PTE6, PTD15); /* (MOSI,SCLK,POWER,CS,RST,DC) */
 
 /*Create a Thread to handle sending BLE Sensor Data */
-//Thread txThread;
 Thread dataThread;
 Timer t; 
 
@@ -55,6 +63,7 @@ char text[20];
 int16_t instruction = 0;
 bool flip;
 bool click = false;
+
 /****************************Call Back Functions*******************************/
 
 
@@ -73,7 +82,6 @@ void ButtonLeft(void)
 void ButtonUp(void)
 {
     StartHaptic();
-    //redLed = !redLed;
     click = true;
 }
 
@@ -160,10 +168,7 @@ int main()
     dataThread.start(dataTask); /*Start transmitting Sensor Tag Data */
  
     while(true) {
-       // pc.printf("main while begins %d \r\n", t.read_ms());
-      //get_command(cmd,move_x,move_y,20);
       osEvent evt = queue.get();
-      //pc.printf("get event status %d \r\n", t.read_ms());
       if (evt.status == osEventMessage) {
         message_t *message = (message_t*) evt.value.p;
         cmd = message->cmd;
@@ -189,11 +194,11 @@ int main()
         else if (move_x != 0 || move_y != 0) {
             instruction += 2;
         }
-        //pc.printf("main before bluetooth  %d \r\n", t.read_ms());
+        
         blueLed = !kw40z_device.GetAdvertisementMode(); /*Indicate BLE Advertisment Mode*/
         kw40z_device.SendSetApplicationMode(GUI_CURRENT_APP_SENSOR_TAG);
 
-        kw40z_device.SendAccel(instruction,(int16_t)move_x,(int16_t)move_y);
+        kw40z_device.SendAccel((int16_t)instruction,(int16_t)move_x,(int16_t)move_y);
         
         flip = !flip;
         if(flip == true) {
@@ -203,8 +208,7 @@ int main()
         }
         
       }
-    Thread::wait(200);
-    //pc.printf("main after wait  %d \r\n", t.read_ms());
+
     }
 }
 
@@ -221,10 +225,10 @@ void StopHaptic(void const *n) {
 
 void dataTask(void) {
     while(true) {
+      
       int cmd = 0;
       float move_x = 0;
       float move_y = 0;
-      int sample_length = 40;
 
     const float coffe_0[5] = { 0.02846571, -0.00256966, -0.20748284,  0.07996476, -0.06161359};
     //{0.02753898, -0.00449275, -0.09590801,  0.1852141,   0.09620012};
@@ -261,13 +265,7 @@ void dataTask(void) {
       float az; // Integer value from the sensor to be displayed
       float gyro_data[3];  // Storage for the data from the sensor
       float gx, gy, gz; // Integer value from the sensor to be displayed
-      float ax_buffer[sample_length];
-      float ay_buffer[sample_length];
-      float az_buffer[sample_length];
-      float gx_buffer[sample_length];
-      float gy_buffer[sample_length];
-      float roll_buffer[sample_length];
-      float pitch_buffer[sample_length];
+
 
       int seq_0 = 0;
       int seq_1 = 0;
@@ -275,8 +273,6 @@ void dataTask(void) {
       float th_1 = 100;
       float th_2 = 100;
 
-
-      //int t_0 = t.read_ms();
       for (int i = 0;i<sample_length;i++){
 
           accel.acquire_accel_data_g(accel_data);
@@ -317,7 +313,6 @@ void dataTask(void) {
           gy_buffer[i] = gy;
           Thread::wait(4);
         }
-        //int t_1 = t.read_ms();
        seq_0 = 0;
        seq_1 = 0; 
     for(int i=0;i<sample_length;i++){
@@ -328,7 +323,6 @@ void dataTask(void) {
        r[2] = my_dot(data_pak,coffe_2) + bias_2;
        r[3] = my_dot(data_pak,coffe_3) + bias_3;
        if(abs(ax_buffer[i]) > 1 && abs(gx_buffer[i]) < 150 && abs(gy_buffer[i]) < 150){
-       // pc.printf("%4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f \n" ,my_dot(data_pak,coffe_0),data_pak[0],data_pak[1],data_pak[2],data_pak[3],data_pak[4],0,0);
            seq_0 = 5;
            seq_1 = 5;
            break;
@@ -336,7 +330,7 @@ void dataTask(void) {
        if(seq_0 == 0){
            if(my_dot(data_pak,coffe_0) > -bias_0){
                seq_0 = 1;
-            //pc.printf("%4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f \n" ,my_dot(data_pak,coffe_0),data_pak[0],data_pak[1],data_pak[2],data_pak[3],data_pak[4],0,0);
+           
             } else if(my_dot(data_pak,coffe_1) > -bias_1){
                 seq_0 = 2;
             } else if (my_dot(data_pak,coffe_2) > -bias_2) {
@@ -344,7 +338,7 @@ void dataTask(void) {
             } else if (my_dot(data_pak,coffe_3) > -bias_3){
                 seq_0 = 4;
             }
-            //seq_0 = max_indx(r);
+           
         }else {
             if(my_dot(data_pak,coffe_1) > -bias_1){
                 seq_1 = 1;
@@ -373,9 +367,9 @@ void dataTask(void) {
         if(seq_0 == seq_1){
             cmd = seq_0;
         }
-       /* if(cmd == 5){
+        if(cmd == 5){
             Thread::wait(500);
-        }*/
+        }
         float roll_avg = 0;
         float pitch_avg = 0;
         for (int i=0;i<sample_length;i++){
@@ -401,13 +395,11 @@ void dataTask(void) {
         else if (pitch_avg < -10) {
             move_y = pitch_avg + 10;
         }
-
+  
         message_t *message = mpool.alloc();
         message->cmd = cmd;
         message->move_x = move_x;
         message->move_y = move_y;
-        //message->t_0 = t_0;
-        //message->t_1 = t_1;
         queue.put(message);
         Thread::wait(200);
 
