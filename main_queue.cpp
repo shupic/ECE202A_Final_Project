@@ -198,6 +198,7 @@ int main()
         move_x = message->move_x;
         move_y = message->move_y;
         mpool.free(message);
+  /////generate instruction from the sensor data
         if (prev_cmd == 0) {
             if (click == true) {
                 cmd = 6;
@@ -219,18 +220,20 @@ int main()
             cmd = 0;
         }
         prev_cmd = cmd;
+        /////////////////////////
+        //send data via BLE
         blueLed = !kw40z_device.GetAdvertisementMode(); /*Indicate BLE Advertisment Mode*/
         kw40z_device.SendSetApplicationMode(GUI_CURRENT_APP_SENSOR_TAG);
-
         kw40z_device.SendAccel((int16_t)instruction,(int16_t)move_x,(int16_t)move_y);
-
+        /////////////////////////////////
+        //flip one bit to indicate different package. 
         flip = !flip;
         if(flip == true) {
             instruction = 1;
         } else {
             instruction = 0;
         }
-
+        ///////////////////////////////////////////
       }
 
     }
