@@ -1,8 +1,7 @@
 ## ECE202A_Final_Project
 
 # Introduction 
-![Image of Test]
-(https://github.com/shupic/ECE202A_Final_Project/blob/master/test.jpeg)
+![Image of Test](https://github.com/shupic/ECE202A_Final_Project/blob/master/test.jpeg)
 # Problem Statement 
 # Prior Works
 # Technical Approaches
