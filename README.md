@@ -1,4 +1,4 @@
-## ECE202A_Final_Project
+#### ECE202A Final Project
 
 # Introduction 
 ![Image of Test](https://github.com/shupic/ECE202A_Final_Project/blob/master/test.jpeg)
