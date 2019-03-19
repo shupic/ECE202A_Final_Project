@@ -69,6 +69,7 @@ Using that data set to build a regression model. Here are some experimental resu
 <img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_5.png" width="500" alt="Image_6"/><br> 
 *Figure 6. result for linear SVM model*   
 #### Neuron network 
+![image_6](/image/image_6.png) <br>
 <img src="/image/image_6.png" width="500" /><br>  
 *Figure 7. result for neural network model*  
 
