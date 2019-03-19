@@ -25,7 +25,7 @@ First, we need to configure the sensors to operate at the maximum rate in order 
 
 The next mission is process the data, the data we measure is linear acceleration and angular velocity, but the actual data we want is position and orientation in world reference frame. In order to doing this, we implement a complementary filter to get the data we desired. 
 The accelerometer measures the acceleration due to gravity and other forces. if we want to use the accelerometer to get the accurate linear acceleration, we have to eliminate the influence due to gravity. And that means we need to get the accurate measurement of object’s orientation. To do so, we have to filter out the short-term force applied.
-On the other hand, gyroscope can get the accurate instant velocity data but the measurement is subject to some constant drift, so we have to apply a high pass filter to filter out the drift.
+On the other hand, gyroscope can get the accurate instant velocity data but the measurement is subject to some constant drift, so we have to apply a high pass filter to filter out the drift.   
 <img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_3.png" width="500" /><br>     
 *Figure 3. complementary filter block diagram[2]*<br>   
 
@@ -66,10 +66,10 @@ Send instruction, move_x and move_y to Raspberry pi
 We first tried to implement a regression model using the linear velocity that enable the Hexiwear works exactly same as the conventional mouse. The challenge for this mission is to collect sensor data that match the movement of actual mouse. During our experiment, we have to bind the docking station to my waist while operating a normal mouse.  Then we using the normal mouse to draw a certain picture and log the mouse location and sensor data. For sync mouse log and data log, we log mouse location when we receive new sensor data from serial link. 
 Using that data set to build a regression model. Here are some experimental result.   
 #### Linear SVM    
-<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_5.png" width="500" alt="Image_6"/><br> 
+<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_5.png" width="500" /><br> 
 *Figure 6. result for linear SVM model*   
 #### Neuron network 
-![image_6](/image/image_6.png) <br>
+
 <img src="/image/image_6.png" width="500" /><br>  
 *Figure 7. result for neural network model*  
 
