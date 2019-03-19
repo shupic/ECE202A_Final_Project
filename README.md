@@ -33,7 +33,13 @@ The complementary filter is add a low pass filter to accelerometer data and a hi
 After this we tried to collect data for out motion sets via a serial link in maximum speed. First option we tried is to using the Hexiwear control the mouse cursor as a conventional mouse (using the position in a plane to map the cursor position). This method ends up failed and then other method is implemented (detail in next chapter). 
 The sensor data is more capable to measure the orientation than measure the linear velocity of the object. The situation is much worse if we use BLE as communication method (due to the delay of the system). We finally choose the using the orientation as the variable to build a regression model to control the mouse cursor. The model is simply a linear model as the displacement of the move cursor is proportional to the rotation angle of the Hexiwear around x and y axis.    
 ### Decision Tree and classifier
-Then we build the classifier to make more complicated movement set. 
+Then we build the classifier to make more complicated movement set, the decision making process is following the below decision tree. 
+<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_8.png" width="500" /><br>     
+*Decision tree*    
+Spicifically, the to make decision about quick turning to a direction is done by a linear binary SVM classifier that taking the angular velocity and current oritation as input. by doing this combine with the two part motion decision. we have a reletaively good seperation between the movement set and move the cursor.
+below is complete command set.
+<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_9.png" width="500" /><br>     
+*Decision tree*    
 
 ### BLE communication in Raspberry pi side
 Pair with Hexiwear by command line (MAC address can be known through scan or BLE APP in phone)      
