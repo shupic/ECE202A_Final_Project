@@ -5,3 +5,4 @@ output: html_document:
 fig_width: 250
 fig_height: 200
 --- 
+image_6: "/image/image_6.png"
