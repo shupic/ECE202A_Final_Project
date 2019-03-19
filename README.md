@@ -59,9 +59,10 @@ Send instruction, move_x and move_y to Raspberry pi
 We first tried to implement a regression model using the linear velocity that enable the Hexiwear works exactly same as the conventional mouse. The challenge for this mission is to collect sensor data that match the movement of actual mouse. During our experiment, we have to bind the docking station to my waist while operating a normal mouse.  Then we using the normal mouse to draw a certain picture and log the mouse location and sensor data. For sync mouse log and data log, we log mouse location when we receive new sensor data from serial link. 
 Using that data set to build a regression model. Here are some experimental result.  
 Linear SVM    
-![image_5|512x397,50%](https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_5.png)
+![image_5](https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_5.png)
 *result for linear SVM model*   
 Neuron network 
+<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_4.png" width="250" height="200" />
 ![image_4](https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_4.png)
 *result for neural network model*    
 The model trained by linear SVM is not useable to get the result we want. The neural network implementation is much better but is cannot implemented in Mbed system. And it also maybe overfitting due to the nature of the neural network, on the hardware test, its also fail to produce desired result. At this point, we decide not using the linear displacement but using the angular displacement to build the control model of the mouse cursor.  
