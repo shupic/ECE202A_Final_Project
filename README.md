@@ -38,7 +38,7 @@ Then we build the classifier to make more complicated movement set, the decision
 <img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_8.png" width="500" /><br>     
 *Figure 4. Decision tree*<br>  
 Spicifically, the to make decision about quick turning to a direction is done by a linear binary SVM classifier that taking the angular velocity and current oritation as input. by doing this combine with the two part motion decision. we have a reletaively good seperation between the movement set and move the cursor.
-below is complete command set.
+below is complete command set.   
 <img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_9.png" width="500" /><br>     
 *Figure 5.Command table*<br>   
 
