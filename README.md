@@ -60,9 +60,9 @@ We first tried to implement a regression model using the linear velocity that en
 Using that data set to build a regression model. Here are some experimental result.  
 Linear SVM    
 ![image_5](https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_5.png)
-<br />*result for linear SVM model*   
+*result for linear SVM model*   
 Neuron network 
-<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_4.png" />   
+![image_4](https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_4.png)  
 *result for neural network model*    
 The model trained by linear SVM is not useable to get the result we want. The neural network implementation is much better but is cannot implemented in Mbed system. And it also maybe overfitting due to the nature of the neural network, on the hardware test, its also fail to produce desired result. At this point, we decide not using the linear displacement but using the angular displacement to build the control model of the mouse cursor.  
 
