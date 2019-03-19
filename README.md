@@ -81,7 +81,7 @@ Our system can achieve all designed commands. Since we put more guard on misclas
 ### Improve BLE speed
 for our project , the maximum frequency that the BLE can send a packet is about 300ms, which is kind slow due to the nature of the application.  We explore the ways that can make BLE link transmit data more frequently but not able to find a way by the deadline. We have tried the serial connected version which has better user experience.  The faster the BLE link can send the packet, the better the user experience is. One way to try is dig into the kw40z firmware and change some of this maybe to speed things up. 
 ### Better decision making
-Other direction is to further optimize the decision making process, in our system is still a chance of misclassification. 
+Other direction is to further optimize the decision making process, in our system is still a chance of misclassification. We can explore the possibility of more complicated classfier for complicated motion detection. 
 
 ## References  
 [Pyautogui](https://pyautogui.readthedocs.io/en/latest/index.html)   
