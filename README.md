@@ -18,7 +18,8 @@ For this project, the problem contains 4 major parts. The first part is to build
 ### Configure sensor and draw samples.
 First, we need to configure the sensors to operate at the maximum rate in order to get best estimate of the current position and orientation of the Hexiwear. The maximum output data rate is set to be 800Hz for both accelerometer and gyroscope. We set the sensor output data rate at 800Hz for both of the sensor using the library provided by Hexiwear site.  
 <img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_1.png" width="500" /><br>   
-*example register map[1]*    
+*example register map[1]*  
+
 <img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_2.png" width="500" /><br> 
 *out put data rate[1]*   
 
