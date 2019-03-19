@@ -13,7 +13,7 @@ in this project we are going to implement a system that using a Hexiwear smartwa
 [Hexi_Accelero_Magneto_Example](https://os.mbed.com/teams/Hexiwear/code/Hexi_Accelero_Magneto_Example/)  
 [Hexi_Gyro_Example](https://os.mbed.com/teams/Hexiwear/code/Hexi_Gyro_Example/)
 ## Technical Approaches
-### BLE communication 
+### BLE communication in Raspberry pi side
 Pair with Hexiwear by command line (MAC address can be known through scan or BLE APP in phone)      
 `bluetoothctl`      
 `pair MAC_ADDRESS`    
@@ -27,8 +27,14 @@ Get the services from Hexiwear through its UUID
 Read the data from that service 
 `c = s.getCharacteristics()[0]` 
 `data = c.read()` 
+### BLE communication in Hexiwear side
+Toggle Hexiwear BLE (its default is in advertisement mode)
+`kw40z_device.ToggleAdvertisementMode();`   
+Send instruction, move_x and move_y to Raspberry pi
+`kw40z_device.SendAccel(instruction, move_x, move_y);`
 ## Experimental Methods
 ## Analysis and Results
 ## Future Directions
 ## References  
-[Pyautogui](https://pyautogui.readthedocs.io/en/latest/index.html)
+[Pyautogui](https://pyautogui.readthedocs.io/en/latest/index.html)   
+[RTOS Mbed](https://os.mbed.com/handbook/RTOS)
