@@ -1,7 +1,7 @@
 # ECE202A Final Project
 Control the mouse cursor movement with smartwatch.
 ## Introduction 
-in this project we are going to implement a system that using a Hexiwear smartwatch to move mouse cursor and do more comlicated instructions.  
+in this project we are going to implement a system that using a Hexiwear smartwatch to move mouse cursor, scroll, zoom and screen shot
 ## Problem Statement 
 ## Prior Works
 ### Connect Hexiwear and Raspberry pi through BLE
