@@ -17,15 +17,15 @@ For this project, the problem contains 4 major parts. The first part is to build
 ## Technical Approaches
 ### Configure sensor and draw samples.
 First, we need to configure the sensors to operate at the maximum rate in order to get best estimate of the current position and orientation of the Hexiwear. The maximum output data rate is set to be 800Hz for both accelerometer and gyroscope. We set the sensor output data rate at 800Hz for both of the sensor using the library provided by Hexiwear site.  
-<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_1.png" width="500"><br>   
+<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_1.png" width="500" /><br>   
 *example register map[1]*    
-<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_2.png" width="500"><br> 
+<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_2.png" width="500" /><br> 
 *out put data rate[1]*   
 
 The next mission is process the data, the data we measure is linear acceleration and angular velocity, but the actual data we want is position and orientation in world reference frame. In order to doing this, we implement a complementary filter to get the data we desired. 
 The accelerometer measures the acceleration due to gravity and other forces. if we want to use the accelerometer to get the accurate linear acceleration, we have to eliminate the influence due to gravity. And that means we need to get the accurate measurement of object’s orientation. To do so, we have to filter out the short-term force applied. 
 On the other hand, gyroscope can get the accurate instant velocity data but the measurement is subject to some constant drift, so we have to apply a high pass filter to filter out the drift. 
-<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_3.png" width="500"><br>     
+<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_3.png" width="500" /><br>     
 *complementary filter block diagram[2]*    
 
 The complementary filter is add a low pass filter to accelerometer data and a high pass filter to gyroscope data and combine those two to get a better measurement of  the object orientation.   
@@ -59,10 +59,10 @@ Send instruction, move_x and move_y to Raspberry pi
 We first tried to implement a regression model using the linear velocity that enable the Hexiwear works exactly same as the conventional mouse. The challenge for this mission is to collect sensor data that match the movement of actual mouse. During our experiment, we have to bind the docking station to my waist while operating a normal mouse.  Then we using the normal mouse to draw a certain picture and log the mouse location and sensor data. For sync mouse log and data log, we log mouse location when we receive new sensor data from serial link. 
 Using that data set to build a regression model. Here are some experimental result.  
 #### Linear SVM    
-<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_5.png" width="500"><br> 
+<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_5.png" width="500" /><br> 
 *result for linear SVM model*   
 #### Neuron network 
-<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_6.png" width="500"><br>  
+<img src="https://github.com/shupic/ECE202A_Final_Project/blob/master/image/image_6.png" width="500" /><br>  
 *result for neural network model*  
 <p>The model trained by linear SVM is not useable to get the result we want. The neural network implementation is much better but is cannot implemented in Mbed system. And it also maybe overfitting due to the nature of the neural network, on the hardware test, its also fail to produce desired result. At this point, we decide not using the linear displacement but using the angular displacement to build the control model of the mouse cursor.</p>  
 
