@@ -146,3 +146,4 @@ Other direction is to further optimize the decision making process, in our syste
 
 [Pyautogui](https://pyautogui.readthedocs.io/en/latest/index.html)   
 [RTOS Mbed](https://os.mbed.com/handbook/RTOS)
+[bluepy - a Bluetooth LE interface for Python](https://ianharvey.github.io/bluepy-doc/)
