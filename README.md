@@ -139,5 +139,10 @@ For our project , the maximum frequency that the BLE can send a packet is about 
 Other direction is to further optimize the decision making process, in our system is still a chance of misclassification. We can explore the possibility of more complicated classfier for complicated motion detection. 
 
 ## References  
+[1] FXOS8700CQ 6-axis sensor with integrated linear accelerometer and magnetometer data sheet
+[https://aip.scitation.org/doi/pdf/10.1063/1.5018520](https://aip.scitation.org/doi/pdf/10.1063/1.5018520)      
+[2] Comparison of complementary and Kalman filter based data fusion for attitude heading reference system      
+[https://aip.scitation.org/doi/pdf/10.1063/1.5018520](https://aip.scitation.org/doi/pdf/10.1063/1.5018520)
+
 [Pyautogui](https://pyautogui.readthedocs.io/en/latest/index.html)   
 [RTOS Mbed](https://os.mbed.com/handbook/RTOS)
