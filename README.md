@@ -17,11 +17,13 @@ For this project, the problem contains 4 major parts. The first part is to build
 ## Technical Approaches
 ### Configure sensor and draw samples.
 First, we need to configure the sensors to operate at the maximum rate in order to get best estimate of the current position and orientation of the Hexiwear. The maximum output data rate is set to be 800Hz for both accelerometer and gyroscope. We set the sensor output data rate at 800Hz for both of the sensor using the library provided by Hexiwear site.      
-<img src="./image/image_1.png" width="500" /><br>   
-*Figure 1. example register map[1]* <br>
+|<img src="./image/image_1.png" width="500" />| 
+|:--:| 
+|*Figure 1. example register map[1]*|   
 
-<img src="./image/image_2.png" width="500" /><br> 
-*Figure 2. out put data rate[1]*<br>
+|<img src="./image/image_2.png" width="500" />|
+|:--:| 
+|*Figure 2. out put data rate[1]*|   
 
 The next mission is process the data, the data we measure is linear acceleration and angular velocity, but the actual data we want is position and orientation in world reference frame. In order to doing this, we implement a complementary filter to get the data we desired. 
 The accelerometer measures the acceleration due to gravity and other forces. if we want to use the accelerometer to get the accurate linear acceleration, we have to eliminate the influence due to gravity. And that means we need to get the accurate measurement of object’s orientation. To do so, we have to filter out the short-term force applied.
@@ -35,12 +37,14 @@ After this we tried to collect data for out motion sets via a serial link in max
 The sensor data is more capable to measure the orientation than measure the linear velocity of the object. The situation is much worse if we use BLE as communication method (due to the delay of the system). We finally choose the using the orientation as the variable to build a regression model to control the mouse cursor. The model is simply a linear model as the displacement of the move cursor is proportional to the rotation angle of the Hexiwear around x and y axis.  
 ### Decision Tree and classifier
 Then we build the classifier to make more complicated movement set, the decision making process is following the below decision tree.       
-<img src="./image/image_8.png" width="500" /><br>     
-*Figure 4. Decision tree*<br>  
+|<img src="./image/image_8.png" width="500" />| 
+|:--:|
+|*Figure 4. Decision tree*| 
 Spicifically, the to make decision about quick turning to a direction is done by a linear binary SVM classifier that taking the angular velocity and current oritation as input. by doing this combine with the two part motion decision. we have a reletaively good seperation between the movement set and move the cursor.
 below is complete command set.   
-<img src="./image/image_9.png" width="500" /><br>     
-*Figure 5.Command table*<br>   
+|<img src="./image/image_9.png" width="500" />|
+|:--:| 
+|*Figure 5.Command table*|     
 
 ### BLE communication in Raspberry pi side
 Pair with Hexiwear by command line (MAC address can be known through scan or BLE APP in phone)      
@@ -66,8 +70,9 @@ Send instruction, move_x and move_y to Raspberry pi
 We first tried to implement a regression model using the linear velocity that enable the Hexiwear works exactly same as the conventional mouse. The challenge for this mission is to collect sensor data that match the movement of actual mouse. During our experiment, we have to bind the docking station to my waist while operating a normal mouse.  Then we using the normal mouse to draw a certain picture and log the mouse location and sensor data. For sync mouse log and data log, we log mouse location when we receive new sensor data from serial link. 
 Using that data set to build a regression model. Here are some experimental result.   
 #### Linear SVM    
-<img src="./image/image_5.png" width="500" /><br> 
-*Figure 6. result for linear SVM model*   
+|<img src="./image/image_5.png" width="500" />|
+|:--:|   
+|*Figure 6. result for linear SVM model*|   
 #### Neuron network 
 
 |<img src="./image/image_6.png" width="500" />| 
