@@ -10,15 +10,19 @@
 
 // Pin connections
 KW40Z kw40z_device(PTE24, PTE25);
-DigitalOut led1(LED_GREEN); // RGB LED
-Serial pc(USBTX, USBRX); // Serial interface
+// RGB LED
+DigitalOut led1(LED_GREEN); 
+// Serial interface
+Serial pc(USBTX, USBRX); 
 FXOS8700 accel(PTC11, PTC10);
-FXAS21002 gyro(PTC11,PTC10); // Gyroscope
-SSD1351 oled(PTB22,PTB21,PTC13,PTB20,PTE6, PTD15); // SSD1351 OLED Driver (MOSI,SCLK,POWER,CS,RST,DC)
+// Gyroscope
+FXAS21002 gyro(PTC11,PTC10); 
+v
+SSD1351 oled(PTB22,PTB21,PTC13,PTB20,PTE6, PTD15); 
 
 // Variables
 Timer t;
-///package structure
+//package structure
 typedef struct {
   int cmd;
   float move_x;
@@ -134,7 +138,8 @@ int main(){
     gyro.gyro_config();
 /***********************************************************/
     //start the data thread 
-    dataThread.start(dataTask); /*Start transmitting Sensor Tag Data */
+    //Start transmitting Sensor Tag Data */
+    dataThread.start(dataTask); 
 
     while(true) {
     int str = t.read_ms();
@@ -186,7 +191,7 @@ int main(){
 
 void dataTask(void) {
     while(true) {
-    //Variables declearation and init
+      //Variables declearation and init
       int cmd = 0;
       float move_x = 0;
       float move_y = 0;
@@ -198,13 +203,18 @@ void dataTask(void) {
       float alpha = 0.6;
       float roll_acc = 0;
       float pitch_acc = 0;
-      float acc_g_x = 0; ///acceleration due to gravity
+      //acceleration due to gravity
+      float acc_g_x = 0; 
       float acc_g_y = 0;
-      float accel_data[3]; // Storage for the data from the sensor
-      float ax, ay;//
-      float az; // Integer value from the sensor to be displayed
-      float gyro_data[3];  // Storage for the data from the sensor
-      float gx, gy, gz; // Integer value from the sensor to be displayed
+      // Storage for the data from the sensor
+      float accel_data[3]; 
+      // Integer value from the sensor to be displayed
+      float ax, ay;
+      float az; 
+      // Storage for the data from the sensor
+      float gyro_data[3];  
+      // Integer value from the sensor to be displayed
+      float gx, gy, gz; 
 
 
       int seq_0 = 0;
@@ -243,8 +253,6 @@ void dataTask(void) {
           if(abs(ay_modify) <= 0.03){
               ay_modify = 0;
           }
-          //for debug purpose only
-          //pc.printf("%4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f \n" ,gx,gy,gz,1.1,1.1,ax,ay,az);
           ax_buffer[i] = ax;
           ay_buffer[i] = ay;
           az_buffer[i] = az;
@@ -256,7 +264,8 @@ void dataTask(void) {
           Thread::wait(2);
         }
 /***********************************************************/
-        int t_1 = t.read_ms();//debug timing.
+        //debug timing.
+        int t_1 = t.read_ms();
 
     seq_0 = 0;
     seq_1 = 0;
