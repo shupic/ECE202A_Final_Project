@@ -29,7 +29,7 @@ On the other hand, gyroscope can get the accurate instant velocity data but the 
 <img src="./image/image_3.png" width="500" /><br>     
 *Figure 3. complementary filter block diagram[2]*<br>   
 
-The complementary filter is add a low pass filter to accelerometer data and a high pass filter to gyroscope data and combine those two to get a better measurement of  the object orientation.
+The complementary filter adds a low pass filter to accelerometer data and a high pass filter to gyroscope data and combines those two to get a better measurement of  the object orientation.
 
 After this we tried to collect data for out motion sets via a serial link in maximum speed. First option we tried is to using the Hexiwear control the mouse cursor as a conventional mouse (using the position in a plane to map the cursor position). This method ends up failed and then other method is implemented (detail in next chapter).     
 The sensor data is more capable to measure the orientation than measure the linear velocity of the object. The situation is much worse if we use BLE as communication method (due to the delay of the system). We finally choose the using the orientation as the variable to build a regression model to control the mouse cursor. The model is simply a linear model as the displacement of the move cursor is proportional to the rotation angle of the Hexiwear around x and y axis.  
