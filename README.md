@@ -24,7 +24,7 @@ First, we need to configure the sensors to operate at the maximum rate in order 
 
 |<img src="./image/image_2.png" width="500" />|
 |:--:| 
-|*Figure 2. out put data rate[1]*|   
+|*Figure 2. output data rate[1]*|   
 
 The next mission is process the data, the data we measure is linear acceleration and angular velocity, but the actual data we want is position and orientation in world reference frame. In order to doing this, we implement a complementary filter to get the data we desired. 
 The accelerometer measures the acceleration due to gravity and other forces. if we want to use the accelerometer to get the accurate linear acceleration, we have to eliminate the influence due to gravity. And that means we need to get the accurate measurement of object’s orientation. To do so, we have to filter out the short-term force applied.
