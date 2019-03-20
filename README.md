@@ -47,6 +47,7 @@ Then, for the onetime, more complicate command. we have to design it that is eas
 |<img src="./image/image_8.png" width="500" />| 
 |:--:|
 |*Figure 4. Decision tree*| 
+
 And to get the motion start and motion stop, we implemented several linear binary SVM classifier that give a set of sensor data classify if that define a motion start or stop. To train that classifier, we draw samples from user motion and label the desired motion start or stop. 
        
 |<img src="./image/image_9.png" width="500" />|
