@@ -54,15 +54,21 @@ below is complete command set.
 
 ### BLE communication in Raspberry pi side
 Pair with Hexiwear by command line (MAC address can be known through scan or BLE APP in phone)      
-`bluetoothctl`      
-`pair MAC_ADDRESS`    
+```
+bluetoothctl
+pair MAC_ADDRESS
+```     
 Exit from bluetoothctl after pairing
 
 Use bluepy package and the main functions are listed below    
 Connect Raspberry pi with Hexiwear through python script (read_data.py)  
-`dev = btle.Peripheral("MAC_ADDRESS")`  
+```
+dev = btle.Peripheral("MAC_ADDRESS")
+```     
 Get the services from Hexiwear through its UUID  
-`s = dev.getServiceByUUID("UUID")`  
+```
+s = dev.getServiceByUUID("UUID")
+```    
 Read the data from that service
 ```
 c = s.getCharacteristics()[0]   
