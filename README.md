@@ -85,6 +85,11 @@ Send instruction, move_x and move_y to Raspberry pi
 ```cpp
 kw40z_device.SendAccel(instruction, move_x, move_y);
 ```
+
+### Memory Queue and Multithread
+To prevent interference between BLE transmission and sensor data processing, we use multithread in the OS, one thread is handle the BLE transmission and other thread handle get sensor data and process the data. To share memory between those two threads, we implement memory queue to do this. The data thread process data and push command into memory queue and on the event have new data on the queue, the BLE thread take data from memory queue and send the packet to RaspberryPi. 
+The challenge is to make the time that data thread generates a new command roughly equal to the time that BLE send one packet. That’s the limitation for the system latency and accuracy. 
+
 ## Experimental Methods
 ### Regression trail
 We first tried to implement a regression model using the linear velocity that enable the Hexiwear works exactly same as the conventional mouse. The challenge for this mission is to collect sensor data that match the movement of actual mouse. During our experiment, we have to bind the docking station to my waist while operating a normal mouse.  Then we using the normal mouse to draw a certain picture and log the mouse location and sensor data. For sync mouse log and data log, we log mouse location when we receive new sensor data from serial link. 
