@@ -93,7 +93,7 @@ We tried the following command to change the minimum connection interval in Rasp
 We used threading for the dataThread, which is a thread samples and generate instruction as seen in main_queue.cpp. In order to share data between main and dataThread, we used queue in Mbed. However, since BLE takes more time, the system would not operate as fast as the serial one. Below is part of code for using queue in Mbed.   
 `message_t *message = mpool.alloc();
 message->cmd = cmd;
-queue.put(message);`
+queue.put(message);`   
 `osEvent evt = queue.get();
 if (evt.status == osEventMessage) {
   message_t *message = (message_t*) evt.value.p;
