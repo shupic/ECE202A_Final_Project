@@ -7,4 +7,4 @@ try:
         value = device.char_read("00002001-0000-1000-8000-00805f9b34fb")
         print(value)
 finally:
-    adapter.stop() 
+    adapter.stop()
