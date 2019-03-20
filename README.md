@@ -39,15 +39,16 @@ The complementary filter adds a low pass filter to accelerometer data and a high
 After this we tried to collect data for out motion sets via a serial link in maximum speed. First option we tried is to using the Hexiwear control the mouse cursor as a conventional mouse (using the position in a plane to map the cursor position). This method ends up failed and then other method is implemented (detail in next chapter).     
 The sensor data is more capable to measure the orientation than measure the linear velocity of the object. The situation is much worse if we use BLE as communication method (due to the delay of the system). We finally choose the using the orientation as the variable to build a regression model to control the mouse cursor. The model is simply a linear model as the displacement of the move cursor is proportional to the rotation angle of the Hexiwear around x and y axis.  
 ### Decision Tree and classifier
-Then we build the classifier to make more complicated movement set, the decision making process is following the below decision tree.       
+The system have to handle some more complicated movement in order to give command other than move the cursor. From our experimental regression model, we figured that the Hexiwear is more capable of measure the angular velocity/position than measure the linear velocity/position, so we are going to design the command using more angular data. 
+First, we decide using angular orientation to control the mouse cursor. The relative position that the mouse moving to is proportional to the row and pitch angle of the Hexiwear. This way, we have a relative accurate control about move the cursor. 
+Then, for the onetime, more complicate command. we have to design it that is easy to distinguish between normal move cursor. After some trail, we decided to build a window of about 20 samples, then from that window try to find a predefined motion start and stop, otherwise, give the move cursor command. The decision tree is described in the graph below. 
+
 
 |<img src="./image/image_8.png" width="500" />| 
 |:--:|
 |*Figure 4. Decision tree*| 
-
-Spicifically, the to make decision about quick turning to a direction is done by a linear binary SVM classifier that taking the angular velocity and current oritation as input. by doing this combine with the two part motion decision. we have a reletaively good seperation between the movement set and move the cursor.
-below is complete command set.  
-
+And to get the motion start and motion stop, we implemented several linear binary SVM classifier that give a set of sensor data classify if that define a motion start or stop. To train that classifier, we draw samples from user motion and label the desired motion start or stop. 
+       
 |<img src="./image/image_9.png" width="500" />|
 |:--:| 
 |*Figure 5.Command table*|     
