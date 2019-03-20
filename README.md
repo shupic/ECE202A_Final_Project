@@ -86,6 +86,20 @@ Using that data set to build a regression model. Here are some experimental resu
 
 The model trained by linear SVM is not useable to get the result we want. The neural network implementation is much better but is cannot implemented in Mbed system. And it also maybe overfitting due to the nature of the neural network, on the hardware test, its also fail to produce desired result. At this point, we decide not using the linear displacement but using the angular displacement to build the control model of the mouse cursor.    
 
+### Increase BLE speed in raspberry pi trail
+We tried the following command to change the minimum connection interval in Raspberry pi side, but did not see any differences.  
+`echo 6 > /sys/kernel/debug/bluetooth/hci0/conn_min_interval`
+### Increase BLE speed in Hexiwear trail 
+We used threading for the dataThread, which is a thread samples and generate instruction as seen in main_queue.cpp. In order to share data between main and dataThread, we used queue in Mbed. However, since BLE takes more time, the system would not operate as fast as the serial one. Below is part of code for using queue in Mbed.   
+`message_t *message = mpool.alloc();
+message->cmd = cmd;
+queue.put(message);`
+`osEvent evt = queue.get();
+if (evt.status == osEventMessage) {
+  message_t *message = (message_t*) evt.value.p;
+  cmd = message->cmd;
+  mpool.free(message);`
+
 ## Analysis and Results
 Our system can achieve all designed commands. Since we put more guard on misclassify, there is a roughly 15% chance that a movement set is not get by the system in the serial communication version and higher (about 30%) on the BLE communicated version.  The swift motion is more like to be misclassified due to the nature of accelerometer and other movement set. The result is covered in the video below.   
 ### YouTube links
@@ -93,7 +107,7 @@ Our system can achieve all designed commands. Since we put more guard on misclas
 [Controlling mouse cursor serial version](https://youtu.be/ypCX5zBp9ks)   
 ## Future Directions
 ### Improve BLE speed
-For our project , the maximum frequency that the BLE can send a packet is about 300ms, which is kind slow due to the nature of the application.  We explore the ways that can make BLE link transmit data more frequently but not able to find a way by the deadline. We have tried the serial connected version which has better user experience.  The faster the BLE link can send the packet, the better the user experience is. One way to try is dig into the kw40z firmware and change some of this maybe to speed things up. 
+For our project , the maximum frequency that the BLE can send a packet is about 200ms, which is kind slow due to the nature of the application.  We explore the ways that can make BLE link transmit data more frequently but not able to find a way by the deadline. We have tried the serial connected version which has better user experience.  The faster the BLE link can send the packet, the better the user experience is. One way to try is dig into the kw40z firmware and change some of this maybe to speed things up. 
 ### Better decision making
 Other direction is to further optimize the decision making process, in our system is still a chance of misclassification. We can explore the possibility of more complicated classfier for complicated motion detection. 
 
