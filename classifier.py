@@ -41,9 +41,9 @@ scoll_up = []
 zoom_out = []
 #4
 zoom_in = []
-#multi class result
+# multi class result
 result = []
-
+# read data from text file. 
 with open('scoll_log%s.txt' %i, encoding = "ISO-8859-1") as file:
     for line in file:
         line_data = line.split()
@@ -59,6 +59,7 @@ with open('scoll_log%s.txt' %i, encoding = "ISO-8859-1") as file:
             ay.append(float(line_data[7]))
             az.append(float(line_data[8]))
 
+# debug parameters. 
 count = 0
 count_1 = 0
 count_2 = 0
@@ -68,7 +69,7 @@ count_5 = 0
 count_6 = 0
 count_7 = 0
 
-
+# label data. 
 for i in range(0,len(gx)):
     if gx[i] > T_larger and gx[i] > gy[i] :
         scoll_down.append(1)
@@ -90,7 +91,7 @@ for i in range(0,len(ax)):
     else :
         zoom_out.append(0)
 
-# for        
+# count the number of 1's in result, for debug use.       
 for i in range(0,len(gx)):
     if gx[i] > T_larger :
         #print(ax[i],ay[i])
@@ -119,8 +120,9 @@ for i in range(0,len(gx)):
 
 
 
-
+# making the trainning data
 trainning_data = np.column_stack((gx,gy,ax,ay,az))
+
 #print(trainning_data)
 print(count)
 print(count_1)
@@ -132,6 +134,8 @@ print('zoom in ',count_6)
 print('zoom out',count_7)
 print(len(trainning_data))
 print(len(gx))
+
+# train the classifier 
 clf_0 = svm.LinearSVC(max_iter=100000)
 clf_0.fit(trainning_data,scoll_down)
 
@@ -146,7 +150,8 @@ clf_3.fit(trainning_data,zoom_out)
 
 clf_4 = svm.NuSVC(nu = 0.1)
 clf_4.fit(trainning_data,scoll_down)
-#print(clf.decision_function(trainning_data))
+
+#get the decision parameters. 
 
 print(clf_0.score(trainning_data,scoll_down))
 print("scoll_down ",clf_0.coef_)
@@ -164,9 +169,6 @@ print(clf_3.score(trainning_data,zoom_out))
 print("zoom_out ",clf_3.coef_)
 print("zoom_out ",clf_3.intercept_)
 
-z = clf_4.decision_function(trainning_data)
-for element in z:
-    print(element)
         
         
 
