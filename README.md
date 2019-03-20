@@ -90,16 +90,19 @@ The model trained by linear SVM is not useable to get the result we want. The ne
 We tried the following command to change the minimum connection interval in Raspberry pi side, but did not see any differences.  
 `echo 6 > /sys/kernel/debug/bluetooth/hci0/conn_min_interval`
 ### Increase BLE speed in Hexiwear trail 
-We used threading for the dataThread, which is a thread samples and generate instruction as seen in main_queue.cpp. In order to share data between main and dataThread, we used queue in Mbed. However, since BLE takes more time, the system would not operate as fast as the serial one. Below is part of code for using queue in Mbed.   
-`message_t *message = mpool.alloc();
+We used threading for the dataThread, which is a thread samples and generate instruction as seen in main_queue.cpp. In order to share data between main and dataThread, we used queue in Mbed. However, since BLE takes more time, the system would not operate as fast as the serial one. Below is part of code for using queue in Mbed. 
+```cpp
+message_t *message = mpool.alloc();
 message->cmd = cmd;
-queue.put(message);`   
-`osEvent evt = queue.get();
+queue.put(message);
+```
+```cpp
+osEvent evt = queue.get();
 if (evt.status == osEventMessage) {
   message_t *message = (message_t*) evt.value.p;
   cmd = message->cmd;
   mpool.free(message);`
-
+```
 ## Analysis and Results
 Our system can achieve all designed commands. Since we put more guard on misclassify, there is a roughly 15% chance that a movement set is not get by the system in the serial communication version and higher (about 30%) on the BLE communicated version.  The swift motion is more like to be misclassified due to the nature of accelerometer and other movement set. The result is covered in the video below.   
 ### YouTube links
