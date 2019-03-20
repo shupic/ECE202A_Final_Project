@@ -118,7 +118,7 @@ osEvent evt = queue.get();
 if (evt.status == osEventMessage) {
   message_t *message = (message_t*) evt.value.p;
   cmd = message->cmd;
-  mpool.free(message);`
+  mpool.free(message);
 ```
 ## Analysis and Results
 Our system can achieve all designed commands. Since we put more guard on misclassify, there is a roughly 15% chance that a movement set is not get by the system in the serial communication version and higher (about 30%) on the BLE communicated version.  The swift motion is more like to be misclassified due to the nature of accelerometer and other movement set. The result is covered in the video below.   
