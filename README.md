@@ -78,10 +78,13 @@ Send instruction, move_x and move_y to Raspberry pi
 We first tried to implement a regression model using the linear velocity that enable the Hexiwear works exactly same as the conventional mouse. The challenge for this mission is to collect sensor data that match the movement of actual mouse. During our experiment, we have to bind the docking station to my waist while operating a normal mouse.  Then we using the normal mouse to draw a certain picture and log the mouse location and sensor data. For sync mouse log and data log, we log mouse location when we receive new sensor data from serial link. 
 Using that data set to build a regression model. Here are some experimental result.   
 #### Linear SVM    
+
 |<img src="./image/image_5.png" width="300" />|
 |:--:|   
-|*Figure 6. result for linear SVM model*|   
+|*Figure 6. result for linear SVM model*|  
+
 #### Neuron network
+
 |<img src="./image/image_6.png" width="300" />| 
 |:--:|  
 |*Figure 7. result for neural network model*|
