@@ -54,7 +54,7 @@ below is complete command set.
 
 ### BLE communication in Raspberry pi side
 Pair with Hexiwear by command line (MAC address can be known through scan or BLE APP in phone)      
-```
+```bash
 bluetoothctl
 pair MAC_ADDRESS
 ```     
@@ -62,23 +62,27 @@ Exit from bluetoothctl after pairing
 
 Use bluepy package and the main functions are listed below    
 Connect Raspberry pi with Hexiwear through python script (read_data.py)  
-```
+```python
 dev = btle.Peripheral("MAC_ADDRESS")
 ```     
 Get the services from Hexiwear through its UUID  
-```
+```python
 s = dev.getServiceByUUID("UUID")
 ```    
 Read the data from that service
-```
+```python
 c = s.getCharacteristics()[0]   
 data = c.read()
 ```
 ### BLE communication in Hexiwear side
 Toggle Hexiwear BLE (its default is in advertisement mode)   
-`kw40z_device.ToggleAdvertisementMode();`   
+```cpp
+kw40z_device.ToggleAdvertisementMode();
+```
 Send instruction, move_x and move_y to Raspberry pi   
-`kw40z_device.SendAccel(instruction, move_x, move_y);`
+```cpp
+kw40z_device.SendAccel(instruction, move_x, move_y);
+```
 ## Experimental Methods
 ### Regression trail
 We first tried to implement a regression model using the linear velocity that enable the Hexiwear works exactly same as the conventional mouse. The challenge for this mission is to collect sensor data that match the movement of actual mouse. During our experiment, we have to bind the docking station to my waist while operating a normal mouse.  Then we using the normal mouse to draw a certain picture and log the mouse location and sensor data. For sync mouse log and data log, we log mouse location when we receive new sensor data from serial link. 
