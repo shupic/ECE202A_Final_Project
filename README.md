@@ -78,8 +78,7 @@ The model trained by linear SVM is not useable to get the result we want. The ne
 ## Analysis and Results
 Our system can achieve all designed commands. Since we put more guard on misclassify, there is a roughly 15% chance that a movement set is not get by the system in the serial communication version and higher (about 30%) on the BLE communicated version.  The swift motion is more like to be misclassified due to the nature of accelerometer and other movement set. The result is covered in the video below.   
 ### YouTube links
-[Controlling mouse cursor Bluetooth version](https://youtu.be/LPZd3f0x7rw)   
-<video src="https://youtu.be/LPZd3f0x7rw" width="320" height="200" controls preload></video>   
+[Controlling mouse cursor Bluetooth version](https://youtu.be/LPZd3f0x7rw)     
 [Controlling mouse cursor serial version](https://youtu.be/ypCX5zBp9ks)   
 ## Future Directions
 ### Improve BLE speed
