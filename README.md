@@ -3,7 +3,7 @@ Control the mouse cursor movement with smartwatch.
 ## Introduction 
 In this project we are going to use the on board accelerometer and gyroscope to measure the movement of Hexiwear and hence make more decision about the command made to the mouse.
 ## Problem Statement 
-For this project, the problem contains 4 major parts. The first part is to build a regression model using the sensor data that control the movement of mouse cursor. The second part is build a classifier that classify a movement to a certain predefined movement sets that maps to a certain command to mouse. The third part is to send the command over the BLE link in a timely manner. The fourth part is to operative the system in real time.
+For this project, the problem contains 4 major parts. The first part is to build a regression model using the sensor data that controls the movement of mouse cursor. The second part is build a classifier that classify a movement to a certain predefined movement sets that maps to a certain command to mouse. The third part is to send the command over the BLE link in a timely manner. The fourth part is to operative the system in real time.
 ## Prior Works
 
 ### Connect Hexiwear and Raspberry pi through BLE
@@ -16,7 +16,7 @@ For this project, the problem contains 4 major parts. The first part is to build
 [Hexi_Gyro_Example](https://os.mbed.com/teams/Hexiwear/code/Hexi_Gyro_Example/)
 ## Technical Approaches
 ### Configure sensor and draw samples.
-First, we need to configure the sensors to operate at the maximum rate in order to get best estimate of the current position and orientation of the Hexiwear. The maximum output data rate is set to be 800Hz for both accelerometer and gyroscope. We set the sensor output data rate at 800Hz for both of the sensor using the library provided by Hexiwear site.
+First, we need to configure the sensors to operate at the maximum rate in order to get best estimate of the current position and orientation of the Hexiwear. The maximum output data rate is set to be 800Hz for both accelerometer and gyroscope. We set the sensor output data rate at 800Hz for both of the sensors using the library provided by Hexiwear site.
 
 |<img src="./image/image_1.png" width="500" />| 
 |:--:| 
@@ -26,7 +26,7 @@ First, we need to configure the sensors to operate at the maximum rate in order 
 |:--:| 
 |*Figure 2. Output data rate[1]*|   
 
-The next mission is process the data, the data we measure is linear acceleration and angular velocity, but the actual data we want is position and orientation in world reference frame. In order to doing this, we implement a complementary filter to get the data we desired. 
+The next mission is to process the data, the data we measure is linear acceleration and angular velocity, but the actual data we want is position and orientation in world reference frame. In order to doing this, we implement a complementary filter to get the data we desired. 
 The accelerometer measures the acceleration due to gravity and other forces. if we want to use the accelerometer to get the accurate linear acceleration, we have to eliminate the influence due to gravity. And that means we need to get the accurate measurement of object’s orientation. To do so, we have to filter out the short-term force applied.
 On the other hand, gyroscope can get the accurate instant velocity data but the measurement is subject to some constant drift, so we have to apply a high pass filter to filter out the drift.  
 
