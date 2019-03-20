@@ -64,7 +64,7 @@ Connect Raspberry pi with Hexiwear through python script (read_data.py)
 Get the services from Hexiwear through its UUID  
 `s = dev.getServiceByUUID("UUID")`  
 Read the data from that service    
-`c = s.getCharacteristics()[0]` 
+`c = s.getCharacteristics()[0]`    
 `data = c.read()` 
 ### BLE communication in Hexiwear side
 Toggle Hexiwear BLE (its default is in advertisement mode)   
