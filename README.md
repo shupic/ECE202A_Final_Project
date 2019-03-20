@@ -16,7 +16,8 @@ For this project, the problem contains 4 major parts. The first part is to build
 [Hexi_Gyro_Example](https://os.mbed.com/teams/Hexiwear/code/Hexi_Gyro_Example/)
 ## Technical Approaches
 ### Configure sensor and draw samples.
-First, we need to configure the sensors to operate at the maximum rate in order to get best estimate of the current position and orientation of the Hexiwear. The maximum output data rate is set to be 800Hz for both accelerometer and gyroscope. We set the sensor output data rate at 800Hz for both of the sensor using the library provided by Hexiwear site.      
+First, we need to configure the sensors to operate at the maximum rate in order to get best estimate of the current position and orientation of the Hexiwear. The maximum output data rate is set to be 800Hz for both accelerometer and gyroscope. We set the sensor output data rate at 800Hz for both of the sensor using the library provided by Hexiwear site.
+
 |<img src="./image/image_1.png" width="500" />| 
 |:--:| 
 |*Figure 1. example register map[1]*|   
@@ -27,9 +28,11 @@ First, we need to configure the sensors to operate at the maximum rate in order 
 
 The next mission is process the data, the data we measure is linear acceleration and angular velocity, but the actual data we want is position and orientation in world reference frame. In order to doing this, we implement a complementary filter to get the data we desired. 
 The accelerometer measures the acceleration due to gravity and other forces. if we want to use the accelerometer to get the accurate linear acceleration, we have to eliminate the influence due to gravity. And that means we need to get the accurate measurement of object’s orientation. To do so, we have to filter out the short-term force applied.
-On the other hand, gyroscope can get the accurate instant velocity data but the measurement is subject to some constant drift, so we have to apply a high pass filter to filter out the drift.   
-<img src="./image/image_3.png" width="500" /><br>     
-*Figure 3. complementary filter block diagram[2]*<br>   
+On the other hand, gyroscope can get the accurate instant velocity data but the measurement is subject to some constant drift, so we have to apply a high pass filter to filter out the drift.  
+
+|<img src="./image/image_3.png" width="500" />|
+|:--:| 
+|*Figure 3. complementary filter block diagram[2]*|      
 
 The complementary filter adds a low pass filter to accelerometer data and a high pass filter to gyroscope data and combines those two to get a better measurement of  the object orientation.
 
@@ -37,11 +40,14 @@ After this we tried to collect data for out motion sets via a serial link in max
 The sensor data is more capable to measure the orientation than measure the linear velocity of the object. The situation is much worse if we use BLE as communication method (due to the delay of the system). We finally choose the using the orientation as the variable to build a regression model to control the mouse cursor. The model is simply a linear model as the displacement of the move cursor is proportional to the rotation angle of the Hexiwear around x and y axis.  
 ### Decision Tree and classifier
 Then we build the classifier to make more complicated movement set, the decision making process is following the below decision tree.       
+
 |<img src="./image/image_8.png" width="500" />| 
 |:--:|
 |*Figure 4. Decision tree*| 
+
 Spicifically, the to make decision about quick turning to a direction is done by a linear binary SVM classifier that taking the angular velocity and current oritation as input. by doing this combine with the two part motion decision. we have a reletaively good seperation between the movement set and move the cursor.
-below is complete command set.   
+below is complete command set.  
+
 |<img src="./image/image_9.png" width="500" />|
 |:--:| 
 |*Figure 5.Command table*|     
@@ -74,7 +80,6 @@ Using that data set to build a regression model. Here are some experimental resu
 |:--:|   
 |*Figure 6. result for linear SVM model*|   
 #### Neuron network 
-
 |<img src="./image/image_6.png" width="500" />| 
 |:--:|  
 |*Figure 7. result for neural network model*|  
