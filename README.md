@@ -77,9 +77,10 @@ The model trained by linear SVM is not useable to get the result we want. The ne
 
 ## Analysis and Results
 Our system can achieve all designed commands. Since we put more guard on misclassify, there is a roughly 15% chance that a movement set is not get by the system in the serial communication version and higher (about 30%) on the BLE communicated version.  The swift motion is more like to be misclassified due to the nature of accelerometer and other movement set. The result is covered in the video below.   
-### Youtube link 
+### YouTube links
 [Controlling mouse cursor Bluetooth version](https://youtu.be/LPZd3f0x7rw)   
-[Controlling mouse cursor serial version](https://youtu.be/ypCX5zBp9ks)
+<video src="https://youtu.be/LPZd3f0x7rw" width="320" height="200" controls preload></video>
+[Controlling mouse cursor serial version](https://youtu.be/ypCX5zBp9ks)   
 ## Future Directions
 ### Improve BLE speed
 for our project , the maximum frequency that the BLE can send a packet is about 300ms, which is kind slow due to the nature of the application.  We explore the ways that can make BLE link transmit data more frequently but not able to find a way by the deadline. We have tried the serial connected version which has better user experience.  The faster the BLE link can send the packet, the better the user experience is. One way to try is dig into the kw40z firmware and change some of this maybe to speed things up. 
