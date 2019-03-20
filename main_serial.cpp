@@ -8,8 +8,6 @@
 
 #define M_PI  3.14159265
 
-//#include <math.h>
-
 // Pin connections
 KW40Z kw40z_device(PTE24, PTE25);
 DigitalOut led1(LED_GREEN); // RGB LED
@@ -20,12 +18,12 @@ SSD1351 oled(PTB22,PTB21,PTC13,PTB20,PTE6, PTD15); // SSD1351 OLED Driver (MOSI,
 
 // Variables
 Timer t;
-//////package structure
+///package structure
 typedef struct {
   int cmd;
   float move_x;
   float move_y;
-  ///timing Variables, for debug only.
+  //timing Variables, for debug only.
   int t_0;
   int t_1;
 } message_t;
@@ -42,7 +40,7 @@ Queue<message_t, 16> queue;
 
 Thread dataThread;
 
-///data buffer of sample_length
+//data buffer of sample_length
 const int sample_length = 40;
 float ax_buffer[sample_length];
 float ay_buffer[sample_length];
@@ -51,7 +49,7 @@ float gx_buffer[sample_length];
 float gy_buffer[sample_length];
 float roll_buffer[sample_length];
 float pitch_buffer[sample_length];
-///////////////////////////
+/***********************************************************/
 
 /////classifier parameters.
 const float coffe_0[5] = { 0.02846571, -0.00256966, -0.20748284,  0.07996476, -0.06161359};
@@ -73,9 +71,9 @@ const float bias_1 = -4.56752823;
 const float bias_2 = -3.5173094;
 //-2.58471739;
 const float bias_3 = -3.13541953;
-/////////////////////////////////////////////////
+/***********************************************************/
 
-/////call beck function for button
+//call beck function for button
 void StartHaptic(void)  {
     hapticTimer.start(50);
     haptic = 1;
@@ -85,8 +83,8 @@ void StopHaptic(void const *n) {
     haptic = 0;
     hapticTimer.stop();
 }
-///////////////////////////////////////
-/////define a dot product function of two array..
+/***********************************************************/
+//define a dot product function of two array..
 float my_dot(float a[],const float b[]) {
     float result = 0.00;
     for(int i=0;i < sizeof(a);i++){
@@ -94,7 +92,7 @@ float my_dot(float a[],const float b[]) {
         }
     return result;
     }
-/////////////////////////////////////////
+/***********************************************************/
 //define a function find the index of max elements
 //if max element greater than 0..
 int max_indx(float a[]){
@@ -108,7 +106,7 @@ int max_indx(float a[]){
         }
     return r;
 }
-//////////////////////////////////////
+/***********************************************************/
 bool click = false;
 
 void ButtonUp(void)
@@ -120,22 +118,22 @@ void ButtonUp(void)
 
 
 int main(){
-  ///start timmer for debug purpose 
+  //start timmer for debug purpose 
     t.start();
     t.reset();
-/////////////////////////////////
+/***********************************************************/
     int cmd = 0;
     int prev_cmd = 0;
     float move_x = 0;
     float move_y = 0;
     int t_0;
     int t_1;
-///////config sensor and button
+    //config sensor and button
     kw40z_device.attach_buttonUp(&ButtonUp);
     accel.accel_config();
     gyro.gyro_config();
-///////////////////////////////////////
-//start the data thread 
+/***********************************************************/
+    //start the data thread 
     dataThread.start(dataTask); /*Start transmitting Sensor Tag Data */
 
     while(true) {
@@ -151,7 +149,7 @@ int main(){
         t_0 = message->t_0;
         t_1 = message->t_1;
         mpool.free(message);
-////generating instruction based on sensor data
+        //generating instruction based on sensor data
         int instruction = 0;
         if (prev_cmd == 0) {
             if (click == true) {
@@ -177,22 +175,10 @@ int main(){
             cmd = 0;
         }
         prev_cmd = cmd;
-///////////////////////////////////////////////////////
-        //blueLed = !kw40z_device.GetAdvertisementMode(); /*Indicate BLE Advertisment Mode*/
-        //kw40z_device.SendSetApplicationMode(GUI_CURRENT_APP_SENSOR_TAG);
-
-        //kw40z_device.SendAccel(instruction,(int16_t)move_x,(int16_t)move_y);
+/***********************************************************/
         int bef_print = t.read_ms();
         pc.printf("%4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f \n" ,(float)instruction,(float)bef_print,(float)bef_if,move_x,move_y,(float)t_0,(float)t_1,1.3);
-        //flip = !flip;
-        //if(flip == true) {
-        //    instruction = 1;
-        //} else {
-        //    instruction = 0;
-        //}
-
       }
-    //Thread::wait(100);
     }
 }
 
@@ -200,7 +186,7 @@ int main(){
 
 void dataTask(void) {
     while(true) {
-//////Variables declearation and init
+    //Variables declearation and init
       int cmd = 0;
       float move_x = 0;
       float move_y = 0;
@@ -230,7 +216,7 @@ void dataTask(void) {
 
 
       int t_0 = t.read_ms();
-      //////sample data equal to sample_length and do initial cumputation
+      //sample data equal to sample_length and do initial cumputation
       for (int i = 0;i<sample_length;i++){
 
           accel.acquire_accel_data_g(accel_data);
@@ -257,7 +243,7 @@ void dataTask(void) {
           if(abs(ay_modify) <= 0.03){
               ay_modify = 0;
           }
-          ///for debug purpose only
+          //for debug purpose only
           //pc.printf("%4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f \n" ,gx,gy,gz,1.1,1.1,ax,ay,az);
           ax_buffer[i] = ax;
           ay_buffer[i] = ay;
@@ -269,27 +255,20 @@ void dataTask(void) {
           //keep the sensors within max sample frequency.
           Thread::wait(2);
         }
-        //////////////////////////////////////////////
-        int t_1 = t.read_ms();///debug timing.
+/***********************************************************/
+        int t_1 = t.read_ms();//debug timing.
 
     seq_0 = 0;
     seq_1 = 0;
-    ///more computation for to get the command
+    //more computation for to get the command
     for(int i=0;i<sample_length;i++){
        float data_pak[5] = {gx_buffer[i],gy_buffer[i],ax_buffer[i],ay_buffer[i],az_buffer[i]};
-       //float r[4];
-       //r[0] = my_dot(data_pak,coffe_0) + bias_0;
-       //r[1] = my_dot(data_pak,coffe_1) + bias_1;
-       //r[2] = my_dot(data_pak,coffe_2) + bias_2;
-       //r[3] = my_dot(data_pak,coffe_3) + bias_3;
        if(abs(ax_buffer[i]) > 1.3 && abs(gx_buffer[i]) < 150 && abs(gy_buffer[i]) < 150){
-        //pc.printf("%4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f \n" ,my_dot(data_pak,coffe_0),data_pak[0],data_pak[1],data_pak[2],data_pak[3],data_pak[4],0,0);
           if_print = 1;
            }
        if(seq_0 == 0){
            if(my_dot(data_pak,coffe_0) > -bias_0){
                seq_0 = 1;
-            //pc.printf("%4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f \n" ,my_dot(data_pak,coffe_0),data_pak[0],data_pak[1],data_pak[2],data_pak[3],data_pak[4],0,0);
             } else if(my_dot(data_pak,coffe_1) > -bias_1){
                 seq_0 = 2;
             } else if (my_dot(data_pak,coffe_2) > -bias_2) {
@@ -297,7 +276,6 @@ void dataTask(void) {
             } else if (my_dot(data_pak,coffe_3) > -bias_3){
                 seq_0 = 4;
             }
-            //seq_0 = max_indx(r);
         }else {
             if(my_dot(data_pak,coffe_1) > -bias_1){
                 seq_1 = 1;
@@ -322,19 +300,19 @@ void dataTask(void) {
             }
         }
     }
-/////////////////////////////////////////
+/***********************************************************/
         cmd = 0;
         if(seq_0 == seq_1){
             cmd = seq_0;
         }
-///handle print exception. 
+        //handle print exception. 
         if(if_print == 1 && cmd == 0){
             cmd = 5;
         }
-/////////////////////////////////
+/***********************************************************/
         float roll_avg = 0;
         float pitch_avg = 0;
-/////get the average value of rotation.
+        //get the average value of rotation.
         for (int i=0;i<sample_length;i++){
              roll_avg = roll_avg + roll_buffer[i];
              pitch_avg = pitch_avg + pitch_buffer[i];
@@ -345,7 +323,7 @@ void dataTask(void) {
 
         move_x = 0;
         move_y = 0;
-////threshing holding to make it work better
+        //threshing holding to make it work better
         if ( roll_avg > 10) {
             move_x = roll_avg - 10;
         }
@@ -358,8 +336,8 @@ void dataTask(void) {
         else if (pitch_avg < -10) {
             move_y = pitch_avg + 10;
         }
-//////////////////////////////////
-//push data to queue.
+/***********************************************************/
+        //push data to queue.
         message_t *message = mpool.alloc();
         message->cmd = cmd;
         message->move_x = move_x;
@@ -367,7 +345,6 @@ void dataTask(void) {
         message->t_0 = t_0;
         message->t_1 = t_1;
         queue.put(message);
-        //Thread::wait(2);
-/////////////////////////////////
+/***********************************************************/
     }
 }
