@@ -70,8 +70,9 @@ Using that data set to build a regression model. Here are some experimental resu
 *Figure 6. result for linear SVM model*   
 #### Neuron network 
 
-<img src="./image/image_6.png" width="500" /><br>  
-*Figure 7. result for neural network model*  
+|<img src="./image/image_6.png" width="500" />| 
+|:--:|  
+|*Figure 7. result for neural network model*|  
 
 The model trained by linear SVM is not useable to get the result we want. The neural network implementation is much better but is cannot implemented in Mbed system. And it also maybe overfitting due to the nature of the neural network, on the hardware test, its also fail to produce desired result. At this point, we decide not using the linear displacement but using the angular displacement to build the control model of the mouse cursor.    
 
