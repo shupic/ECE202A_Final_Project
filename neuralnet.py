@@ -27,7 +27,7 @@ my = []
 #displacement in x and y direction
 dx = []
 dy = []
-
+#read data file to get the sensor data
 with open('data_log%s.txt' %i, encoding = "ISO-8859-1") as file:
     for line in file:
         line_data = line.split()
@@ -43,7 +43,7 @@ with open('data_log%s.txt' %i, encoding = "ISO-8859-1") as file:
             ay.append(float(line_data[7]))
             az.append(float(line_data[8]))
 
-
+#read mouse logger data to get mouse position.
 with open('mouse_log%s.txt' %i, encoding = "ISO-8859-1") as file:
     for line in file:
         line_data = line.split()
@@ -114,6 +114,9 @@ for k in range(len(s_x)):
 
 print ('release reset')
 #time.sleep(0.5)
+###
+#using the neural network do the real time command
+###
 #while(ser.is_open):
 #    line = ser.readline()
 #    d_line = str(line,encoding='utf-8',errors='strict')
@@ -129,7 +132,7 @@ print ('release reset')
 #        print('dy is ',new_y)
 #        pyautogui.moveRel(new_x+22,new_y-2)
     
-
+# plot the predicted data vs. original data. 
 lw = 2
 plt.plot(mx,my,color = 'darkorange')
 plt.plot(px,py,color = 'navy')
