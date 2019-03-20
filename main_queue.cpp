@@ -56,7 +56,7 @@ const float bias_1 = -4.56752823;
 const float bias_2 = -3.5173094;
 //-2.58471739;
 const float bias_3 = -3.13541953;
-/////////////////////////////////////////////////
+/***********************************************************/
 
 DigitalOut redLed(LED1,1);
 DigitalOut greenLed(LED2,1);
@@ -65,22 +65,22 @@ DigitalOut haptic(PTB9);
 Serial pc(USBTX, USBRX); // Serial interface
 
 
-/* Define timer for haptic feedback */
+// Define timer for haptic feedback 
 RtosTimer hapticTimer(StopHaptic, osTimerOnce);
 
-/* Instantiate the Hexi KW40Z Driver (UART TX, UART RX) */
+// Instantiate the Hexi KW40Z Driver (UART TX, UART RX)
 KW40Z kw40z_device(PTE24, PTE25);
 FXOS8700 accel(PTC11, PTC10);
 FXAS21002 gyro(PTC11,PTC10); // Gyroscope
 
-/* Instantiate the SSD1351 OLED Driver */
+// Instantiate the SSD1351 OLED Driver
 SSD1351 oled(PTB22,PTB21,PTC13,PTB20,PTE6, PTD15); /* (MOSI,SCLK,POWER,CS,RST,DC) */
 
-/*Create a Thread to handle sending BLE Sensor Data */
+// Create a Thread to handle sending BLE Sensor Data
 Thread dataThread;
 Timer t;
 
- /* Text Buffer */
+ // Text Buffer
 char text[20];
 int16_t instruction = 0;
 bool flip;
@@ -134,45 +134,42 @@ float my_dot(float a[5], const float b[5]) {
     return result;
 }
 
-
-/////////////////////////////////////////////////////
-
 /***********************End of Call Back Functions*****************************/
 
 /********************************Main******************************************/
 
 int main()
 {
-    /* Register callbacks to application functions */
+    // Register callbacks to application functions
     kw40z_device.attach_buttonLeft(&ButtonLeft);
     kw40z_device.attach_buttonRight(&ButtonRight);
     kw40z_device.attach_buttonUp(&ButtonUp);
     kw40z_device.attach_passkey(&PassKey);
 
-    /* Turn on the backlight of the OLED Display */
+    // Turn on the backlight of the OLED Display
     oled.DimScreenON();
 
-    /* Fills the screen with solid black */
+    // Fills the screen with solid black
     oled.FillScreen(COLOR_BLACK);
 
-    /* Get OLED Class Default Text Properties */
+    // Get OLED Class Default Text Properties
     oled_text_properties_t textProperties = {0};
     oled.GetTextProperties(&textProperties);
 
-    /* Change font color to Blue */
+    // Change font color to Blue
     textProperties.fontColor   = COLOR_BLUE;
     oled.SetTextProperties(&textProperties);
 
-    /* Display Bluetooth Label at x=17,y=65 */
+    // Display Bluetooth Label at x=17,y=65
     strcpy((char *) text,"BLUETOOTH");
     oled.Label((uint8_t *)text,17,65);
 
-    /* Change font color to white */
+    // Change font color to white
     textProperties.fontColor   = COLOR_WHITE;
     textProperties.alignParam = OLED_TEXT_ALIGN_CENTER;
     oled.SetTextProperties(&textProperties);
 
-    /* Display Label at x=22,y=80 */
+    // Display Label at x=22,y=80 
     strcpy((char *) text,"Tap Below");
     oled.Label((uint8_t *)text,22,80);
 
@@ -188,7 +185,8 @@ int main()
     float move_x = 0;
     float move_y = 0;
 
-    dataThread.start(dataTask); /*Start transmitting Sensor Tag Data */
+    //Start transmitting Sensor Tag Data 
+    dataThread.start(dataTask); 
 
     while(true) {
       osEvent evt = queue.get();
@@ -198,7 +196,7 @@ int main()
         move_x = message->move_x;
         move_y = message->move_y;
         mpool.free(message);
-  /////generate instruction from the sensor data
+        //generate instruction from the sensor data
         if (prev_cmd == 0) {
             if (click == true) {
                 cmd = 6;
@@ -220,12 +218,13 @@ int main()
             cmd = 0;
         }
         prev_cmd = cmd;
-        /////////////////////////
+        /***********************************************************/
         //send data via BLE
-        blueLed = !kw40z_device.GetAdvertisementMode(); /*Indicate BLE Advertisment Mode*/
+        //Indicate BLE Advertisment Mode
+        blueLed = !kw40z_device.GetAdvertisementMode(); 
         kw40z_device.SendSetApplicationMode(GUI_CURRENT_APP_SENSOR_TAG);
         kw40z_device.SendAccel((int16_t)instruction,(int16_t)move_x,(int16_t)move_y);
-        /////////////////////////////////
+        /***********************************************************/
         //flip one bit to indicate different package. 
         flip = !flip;
         if(flip == true) {
@@ -233,7 +232,7 @@ int main()
         } else {
             instruction = 0;
         }
-        ///////////////////////////////////////////
+        /***********************************************************/
       }
 
     }
@@ -264,14 +263,18 @@ void dataTask(void) {
       float alpha = 0.6;
       float roll_acc = 0;
       float pitch_acc = 0;
-      float acc_g_x = 0; ///acceleration due to gravity
+      //acceleration due to gravity in x, y direction 
+      float acc_g_x = 0; 
       float acc_g_y = 0;
-      float accel_data[3]; // Storage for the data from the sensor
-      float ax, ay;//
-      float az; // Integer value from the sensor to be displayed
-      float gyro_data[3];  // Storage for the data from the sensor
-      float gx, gy, gz; // Integer value from the sensor to be displayed
-
+      // Storage for the data from the sensor
+      float accel_data[3]; 
+      // Integer value from the sensor to be displayed
+      float ax, ay;
+      float az; 
+      // Storage for the data from the sensor
+      float gyro_data[3];  
+      // Integer value from the sensor to be displayed
+      float gx, gy, gz; 
 
       int seq_0 = 0;
       int seq_1 = 0;
@@ -280,11 +283,9 @@ void dataTask(void) {
       float th_1 = 100;
       float th_2 = 100;
 
-
       int t_0 = t.read_ms();
-      //////sample data equal to sample_length and do initial cumputation
+      //sample data equal to sample_length and do initial cumputation
       for (int i = 0;i<sample_length;i++){
-
           accel.acquire_accel_data_g(accel_data);
           gyro.acquire_gyro_data_dps(gyro_data);
           ax = accel_data[0];
@@ -293,12 +294,14 @@ void dataTask(void) {
           gx = gyro_data[0];
           gy = gyro_data[1];
           gz = gyro_data[2];
+          // calculate roll and pitch angles from acceleration values
           roll_acc = (atan2(-ay,-az)*180.0)/M_PI;
           pitch_acc = (atan2(-ax,sqrt(ay*ay + az*az))*180.0)/M_PI;
           roll = gx*dt+roll;
           pitch = gy*dt+pitch;
           pitch = alpha*pitch+(1-alpha)*pitch_acc;
           roll = alpha*roll+(1-alpha)*roll_acc;
+          // calculate the acceleration in x, y direction due to gravity force
           acc_g_x = -cos(roll/180*M_PI)*sin(pitch/180*M_PI);
           acc_g_y = -sin(roll/180*M_PI)*cos(pitch/180*M_PI);
           ax_modify = ax - acc_g_x;
@@ -309,7 +312,7 @@ void dataTask(void) {
           if(abs(ay_modify) <= 0.03){
               ay_modify = 0;
           }
-          ///for debug purpose only
+          //for debug purpose only
           //pc.printf("%4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f \n" ,gx,gy,gz,1.1,1.1,ax,ay,az);
           ax_buffer[i] = ax;
           ay_buffer[i] = ay;
@@ -321,27 +324,21 @@ void dataTask(void) {
           //keep the sensors within max sample frequency.
           Thread::wait(2);
         }
-        //////////////////////////////////////////////
-        int t_1 = t.read_ms();///debug timing.
+        /***********************************************************/
+        //debug timing.
+        int t_1 = t.read_ms();
 
     seq_0 = 0;
     seq_1 = 0;
-    ///more computation for to get the command
+    //more computation for to get the command
     for(int i=0;i<sample_length;i++){
        float data_pak[5] = {gx_buffer[i],gy_buffer[i],ax_buffer[i],ay_buffer[i],az_buffer[i]};
-       //float r[4];
-       //r[0] = my_dot(data_pak,coffe_0) + bias_0;
-       //r[1] = my_dot(data_pak,coffe_1) + bias_1;
-       //r[2] = my_dot(data_pak,coffe_2) + bias_2;
-       //r[3] = my_dot(data_pak,coffe_3) + bias_3;
        if(abs(ax_buffer[i]) > 1.5 && abs(gx_buffer[i]) < 150 && abs(gy_buffer[i]) < 150){
-        //pc.printf("%4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f \n" ,my_dot(data_pak,coffe_0),data_pak[0],data_pak[1],data_pak[2],data_pak[3],data_pak[4],0,0);
           if_print = 1;
-           }
+       }
        if(seq_0 == 0){
            if(my_dot(data_pak,coffe_0) > -bias_0){
                seq_0 = 1;
-            //pc.printf("%4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f \n" ,my_dot(data_pak,coffe_0),data_pak[0],data_pak[1],data_pak[2],data_pak[3],data_pak[4],0,0);
             } else if(my_dot(data_pak,coffe_1) > -bias_1){
                 seq_0 = 2;
             } else if (my_dot(data_pak,coffe_2) > -bias_2) {
@@ -349,7 +346,6 @@ void dataTask(void) {
             } else if (my_dot(data_pak,coffe_3) > -bias_3){
                 seq_0 = 4;
             }
-            //seq_0 = max_indx(r);
         }else {
             if(my_dot(data_pak,coffe_1) > -bias_1){
                 seq_1 = 1;
@@ -374,19 +370,19 @@ void dataTask(void) {
             }
         }
     }
-/////////////////////////////////////////
+/***********************************************************/
         cmd = 0;
         if(seq_0 == seq_1){
             cmd = seq_0;
         }
-///handle print exception.
+//handle print exception.
         if(if_print == 1 && cmd == 0){
             cmd = 5;
         }
-/////////////////////////////////
+/***********************************************************/
         float roll_avg = 0;
         float pitch_avg = 0;
-/////get the average value of rotation.
+//get the average value of rotation.
         for (int i=0;i<sample_length;i++){
              roll_avg = roll_avg + roll_buffer[i];
              pitch_avg = pitch_avg + pitch_buffer[i];
@@ -397,7 +393,7 @@ void dataTask(void) {
 
         move_x = 0;
         move_y = 0;
-////threshing holding to make it work better
+//threshing holding to make it work better
         if ( roll_avg > 10) {
             move_x = roll_avg - 10;
         }
@@ -410,7 +406,7 @@ void dataTask(void) {
         else if (pitch_avg < -10) {
             move_y = pitch_avg + 10;
         }
-//////////////////////////////////
+/***********************************************************/
 //push data to queue.
         message_t *message = mpool.alloc();
         message->cmd = cmd;
@@ -418,6 +414,6 @@ void dataTask(void) {
         message->move_y = move_y;
         queue.put(message);
         Thread::wait(200);
-/////////////////////////////////
+/***********************************************************/
     }
 } 
