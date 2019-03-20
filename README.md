@@ -20,11 +20,11 @@ First, we need to configure the sensors to operate at the maximum rate in order 
 
 |<img src="./image/image_1.png" width="500" />| 
 |:--:| 
-|*Figure 1. example register map[1]*|   
+|*Figure 1. Example register map[1]*|   
 
 |<img src="./image/image_2.png" width="500" />|
 |:--:| 
-|*Figure 2. output data rate[1]*|   
+|*Figure 2. Output data rate[1]*|   
 
 The next mission is process the data, the data we measure is linear acceleration and angular velocity, but the actual data we want is position and orientation in world reference frame. In order to doing this, we implement a complementary filter to get the data we desired. 
 The accelerometer measures the acceleration due to gravity and other forces. if we want to use the accelerometer to get the accurate linear acceleration, we have to eliminate the influence due to gravity. And that means we need to get the accurate measurement of object’s orientation. To do so, we have to filter out the short-term force applied.
@@ -32,7 +32,7 @@ On the other hand, gyroscope can get the accurate instant velocity data but the 
 
 |<img src="./image/image_3.png" width="500" />|
 |:--:| 
-|*Figure 3. complementary filter block diagram[2]*|      
+|*Figure 3. Complementary filter block diagram[2]*|      
 
 The complementary filter adds a low pass filter to accelerometer data and a high pass filter to gyroscope data and combines those two to get a better measurement of  the object orientation.
 
@@ -91,13 +91,13 @@ Using that data set to build a regression model. Here are some experimental resu
 
 |<img src="./image/image_5.png" width="300" />|
 |:--:|   
-|*Figure 6. result for linear SVM model*|  
+|*Figure 6. Result for linear SVM model*|  
 
 #### Neuron network
 
 |<img src="./image/image_6.png" width="300" />| 
 |:--:|  
-|*Figure 7. result for neural network model*|
+|*Figure 7. Result for neural network model*|
 
 The model trained by linear SVM is not useable to get the result we want. The neural network implementation is much better but is cannot implemented in Mbed system. And it also maybe overfitting due to the nature of the neural network, on the hardware test, its also fail to produce desired result. At this point, we decide not using the linear displacement but using the angular displacement to build the control model of the mouse cursor.    
 
