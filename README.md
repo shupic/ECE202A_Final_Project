@@ -103,7 +103,9 @@ The model trained by linear SVM is not useable to get the result we want. The ne
 
 ### Increase BLE speed in raspberry pi trail
 We tried the following command to change the minimum connection interval in Raspberry pi side, but did not see any differences.  
-`echo 6 > /sys/kernel/debug/bluetooth/hci0/conn_min_interval`
+```bash
+echo 6 > /sys/kernel/debug/bluetooth/hci0/conn_min_interval
+```   
 ### Increase BLE speed in Hexiwear trail 
 We used threading for the dataThread, which is a thread samples and generate instruction as seen in main_queue.cpp. In order to share data between main and dataThread, we used queue in Mbed. However, since BLE takes more time, the system would not operate as fast as the serial one. Below is part of code for using queue in Mbed. 
 ```cpp
