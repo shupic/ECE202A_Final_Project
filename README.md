@@ -6,14 +6,6 @@ In this project we are going to use the on board accelerometer and gyroscope to 
 For this project, the problem contains 4 major parts. The first part is to build a regression model using the sensor data that controls the movement of mouse cursor. The second part is build a classifier that classify a movement to a certain predefined movement sets that maps to a certain command to mouse. The third part is to send the command over the BLE link in a timely manner. The fourth part is to operative the system in real time.
 ## Prior Works
 
-### Connect Hexiwear and Raspberry pi through BLE
-[Tutorial: BLE Pairing the Raspberry Pi 3 Model B with Hexiwear](https://mcuoneclipse.com/2016/12/19/tutorial-ble-pairing-the-raspberry-pi-3-model-b-with-hexiwear/)     
-[Raspberry Pi Zero W and Hexiwear Bluetooth Experiment](https://github.com/Klamath233/ecexxx/blob/master/docs/btle.md)  
-### Hexiwear BLE
-[Hexiwear_BLE_Example](https://os.mbed.com/teams/Hexiwear/code/Hexi_BLE_Example/)
-### Hexiwear Sensor Data Reading 
-[Hexi_Accelero_Magneto_Example](https://os.mbed.com/teams/Hexiwear/code/Hexi_Accelero_Magneto_Example/)  
-[Hexi_Gyro_Example](https://os.mbed.com/teams/Hexiwear/code/Hexi_Gyro_Example/)
 ## Technical Approaches
 ### Configure sensor and draw samples.
 First, we need to configure the sensors to operate at the maximum rate in order to get best estimate of the current position and orientation of the Hexiwear. The maximum output data rate is set to be 800Hz for both accelerometer and gyroscope. We set the sensor output data rate at 800Hz for both of the sensors using the library provided by Hexiwear site.
@@ -143,7 +135,12 @@ Other direction is to further optimize the decision making process, in our syste
 [https://aip.scitation.org/doi/pdf/10.1063/1.5018520](https://aip.scitation.org/doi/pdf/10.1063/1.5018520)      
 [2] Comparison of complementary and Kalman filter based data fusion for attitude heading reference system      
 [https://aip.scitation.org/doi/pdf/10.1063/1.5018520](https://aip.scitation.org/doi/pdf/10.1063/1.5018520)
-
+  
+[bluepy - a Bluetooth LE interface for Python](https://ianharvey.github.io/bluepy-doc/)    
+[Hexi_Accelero_Magneto_Example](https://os.mbed.com/teams/Hexiwear/code/Hexi_Accelero_Magneto_Example/)        
+[Hexi_Gyro_Example](https://os.mbed.com/teams/Hexiwear/code/Hexi_Gyro_Example/)   
+[Hexiwear_BLE_Example](https://os.mbed.com/teams/Hexiwear/code/Hexi_BLE_Example/)   
 [Pyautogui](https://pyautogui.readthedocs.io/en/latest/index.html)   
+[Raspberry Pi Zero W and Hexiwear Bluetooth Experiment](https://github.com/Klamath233/ecexxx/blob/master/docs/btle.md)   
 [RTOS Mbed](https://os.mbed.com/handbook/RTOS)   
-[bluepy - a Bluetooth LE interface for Python](https://ianharvey.github.io/bluepy-doc/)
+[Tutorial: BLE Pairing the Raspberry Pi 3 Model B with Hexiwear](https://mcuoneclipse.com/2016/12/19/tutorial-ble-pairing-the-raspberry-pi-3-model-b-with-hexiwear/)    
