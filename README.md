@@ -1,4 +1,5 @@
 # ECE202A Final Project  
+### Group Member: Shuping Chen, Lu Fan
 Control the mouse cursor movement with smartwatch.
 ## Introduction 
 In this project we are going to use the on board accelerometer and gyroscope to measure the movement of Hexiwear and hence make more decision about the command made to the mouse.
