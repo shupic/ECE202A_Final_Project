@@ -4,8 +4,10 @@ Control the mouse cursor movement with smartwatch.
 In this project we are going to use the on board accelerometer and gyroscope to measure the movement of Hexiwear and hence make more decision about the command made to the mouse.
 ## Problem Statement 
 For this project, the problem contains 4 major parts. The first part is to build a regression model using the sensor data that controls the movement of mouse cursor. The second part is build a classifier that classify a movement to a certain predefined movement sets that maps to a certain command to mouse. The third part is to send the command over the BLE link in a timely manner. The fourth part is to operative the system in real time.
-## Prior Works
+## Prior Works  
 
+[Glove Mouse](http://people.ece.cornell.edu/land/courses/ece4760/FinalProjects/f2012/as986_hl525/as986_hl525/index.htm)  
+  
 ## Technical Approaches
 ### Configure sensor and draw samples.
 First, we need to configure the sensors to operate at the maximum rate in order to get best estimate of the current position and orientation of the Hexiwear. The maximum output data rate is set to be 800Hz for both accelerometer and gyroscope. We set the sensor output data rate at 800Hz for both of the sensors using the library provided by Hexiwear site.
