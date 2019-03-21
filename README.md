@@ -122,7 +122,8 @@ if (evt.status == osEventMessage) {
   mpool.free(message);
 ```
 ## Analysis and Results
-Our system can achieve all designed commands. Since we put more guard on misclassify, there is a roughly 15% chance that a movement set is not get by the system in the serial communication version and higher (about 30%) on the BLE communicated version.  The swift motion is more like to be misclassified due to the nature of accelerometer and other movement set. The result is covered in the video below.   
+Our system can achieve all designed commands. Both the serial version and BLE version can move the cursor in the right direction. also can do the designed scroll, zoom, screenshot and click. 
+The BLE version has more latency than the serial version, there is about 250ms latency in the BLE version, and due to the internal time the takes to communicate with BLE the accuracy of catch the scrool,zoom or screenshot command will also decrease (due to the time interval that need to deal with BLE) below are the demo link for both version. 
 ### YouTube links
 [Controlling mouse cursor Bluetooth version](https://youtu.be/LPZd3f0x7rw)     
 [Controlling mouse cursor serial version](https://youtu.be/ypCX5zBp9ks)   
